@@ -18,8 +18,8 @@ public interface CommentRepo extends CrudRepository<Comment, Long> {
     @Query("SELECT c FROM Comment c ORDER BY c.book.tittle DESC")
     public List<Comment> showAllinOrder();
 
-    @Query("SELECT c FROM Comment c ORDER BY c.pageNumber")
-    public List<Comment> showAllinPageOrder();
+    @Query("SELECT c FROM Comment c WHERE c.book.id = :bookId ORDER BY c.pageNumber")
+    public List<Comment> showAllinPageOrder(@Param("bookId") Long bookId);
 
     public List<Comment> findByBookId(Long bookId);
 

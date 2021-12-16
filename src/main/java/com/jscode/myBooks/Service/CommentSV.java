@@ -49,8 +49,8 @@ public class CommentSV {
         return (List<Comment>) commentRepo.findAll();
     }
 
-    public List<Comment> showAllPageOrder() {
-        return (List<Comment>) commentRepo.showAllinPageOrder();
+    public List<Comment> showInPageOrder(Long bookId) {
+        return (List<Comment>) commentRepo.showAllinPageOrder(bookId);
     }
 
     public List<Comment> showAllInBookOrder() {

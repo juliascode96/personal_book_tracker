@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>My Books</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
+<header>
+    <div class="navbar">
+        <nav>
+            <ul id="lista">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/books}">Books</a></li>
+                <li><a th:href="@{/book/new}">Add book</a></li>
+            </ul>
+        </nav>
+        <img src="nav.png" class="menu-icon" onclick="togglemenu()">
 
+    </div>
+</header>
+
+<main>
+    <h2>My [panda] books</h2>
+    <p>My books es una página que tiene el ojbetivo de que los usuarios puedan añadir y guardar los libros que están leyendo o ya han terminado, con la idea de llevar un registro. Además, se puede agregar comentarios a cada libro, guardandolos en relación el número de página al que corresponden, para no perder las ideas que se le puedan ocurrir a uno mientras va leyendo y no tener necesidad de escribir sobre el libro en sí. </p>
+</main>
+
+<script>
+    var lista = document.getElementById("lista");
+    lista.style.maxHeight = "0px";
+
+    function togglemenu(){
+        if(lista.style.maxHeight === "0px") {
+            lista.style.maxHeight = "145px";
+        } else {
+            lista.style.maxHeight = "0px";
+        }
+    }
+</script>
 </body>
 </html>

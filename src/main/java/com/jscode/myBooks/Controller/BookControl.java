@@ -1,18 +1,24 @@
 package com.jscode.myBooks.Controller;
 
 import com.jscode.myBooks.Entity.Book;
+import com.jscode.myBooks.Entity.Comment;
 import com.jscode.myBooks.Service.BookSV;
+import com.jscode.myBooks.Service.CommentSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class BookControl {
     @Autowired
     BookSV bookSV;
+
+    @Autowired
+    CommentSV commentSV;
 
     @GetMapping("/books")
     public String listBooks(Model model, String keyword) {
@@ -46,7 +52,7 @@ public class BookControl {
 
     @GetMapping("/books/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("book", bookSV.searchById(id));
+        model.addAttribute("book", bookSV.searchById(id).get());
         return "edit_book";
     }
 
@@ -67,8 +73,12 @@ public class BookControl {
         return "redirect:/books";
     }
 
-    @DeleteMapping("/books/delete/{id}")
+    @GetMapping("/books/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
+        List<Comment> comments = commentSV.showByBook(id);
+        for (Comment c: comments) {
+            commentSV.deleteComment(c.getId());
+        }
         bookSV.deleteBook(id);
         return "redirect:/books";
     }

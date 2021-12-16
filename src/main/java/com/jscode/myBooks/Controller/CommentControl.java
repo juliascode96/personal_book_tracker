@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -50,15 +51,22 @@ public class CommentControl {
 
     @GetMapping("/books/{bookId}/edit_comment/{id}")
     public String editCommentForm(@PathVariable Long bookId, @PathVariable Long id, Model model){
-        model.addAttribute("comment", commentSV.searchById(id));
+        Comment comment = commentSV.searchById(id).get();
+        Book book = bookSV.searchById(bookId).get();
+        comment.setBook(book);
+        model.addAttribute("comment", comment);
+        model.addAttribute("book", book);
         return "edit_comment";
     }
 
     @PostMapping("/books/{bookId}/comments/{id}")
     public String editComment(@PathVariable Long bookId, @PathVariable Long id, @ModelAttribute("comment")Comment comment) {
+        comment.setBook(bookSV.searchById(bookId).get());
         Optional<Comment> resp = commentSV.searchById(id);
         if(resp.isPresent()){
             Comment c = resp.get();
+            c.setId(comment.getId());
+            c.setBook(comment.getBook());
             c.setText(comment.getText());
             c.setPageNumber(comment.getPageNumber());
             try {
@@ -67,11 +75,14 @@ public class CommentControl {
                 System.out.println(e);
             }
         }
-        return "redirect:/books/{bookId}/comments/{id}";
+        return "redirect:/books/{bookId}/comments";
     }
 
-    @DeleteMapping("/books/{bookId}/comment/{id}")
-    public String deleteComment(@PathVariable Long bookId, @PathVariable Long id) {
+    @GetMapping("/books/{bookId}/comment/{id}")
+    public String deleteComment(@PathVariable Long bookId, @PathVariable Long id, Model model) {
+        Book book = bookSV.searchById(bookId).get();
+        model.addAttribute("book", book);
+        model.addAttribute("comment", commentSV.searchById(id).get());
         commentSV.deleteComment(id);
         return "redirect:/books/{bookId}/comments";
     }
