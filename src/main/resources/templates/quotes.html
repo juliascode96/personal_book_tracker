@@ -25,31 +25,29 @@
 
     </div>
 </header>
-<div class="book-main">
+<div th:each = "c: ${quotes}" class="book-main">
     <div class="card-text">
         <div class="portada">
 
         </div>
         <div class="title-total">
-            <div th:text="${book.author}" class="title"></div>
-            <h2 th:text="${book.tittle}"></h2>
+            <span class="title">Page number: <span th:text="${c.pageNumber}"></span></span>
 
-            <div class="desc"></div>
+            <div th:text="${c.text}" class="desc"></div>
+            <br>
+            <br>
+            <br>
             <div class="actions">
-                <a th:href="@{/books/{bookId}/new_comment(bookId=${book.id})}" class = "boton">Add comment</a>
-                <a th:href="@{/books/{bookId}/comments(bookId=${book.id})}" class = "boton">All comments</a>
-                <br>
-                <br>
-                <a th:href="@{/books/{bookId}/new_quote(bookId=${book.id})}" class = "boton">Save quote</a>
-                <a th:href="@{/books/{bookId}/quotes(bookId=${book.id})}" class = "boton">Saved quotes</a>
+                <a th:href="@{/books/{bookId}/edit_quote/{id} (id=${c.id}, bookId=${c.book.id})}" class = "boton">Edit quote</a>
+                <a th:href="@{/books/{bookId}/quote/{id} (id=${c.id}, bookId=${c.book.id})}" class = "boton">Delete quote</a>
             </div>
         </div>
 
     </div>
 
-
-
 </div>
+<a th:href="@{/books/{bookId}/new_quote(bookId=${book.id})}" class = "boton">Add quote</a>
+<a th:href="@{/books/{id}(id=${book.id})}" class = "boton">Back</a>
 <script>
     var lista = document.getElementById("lista");
     lista.style.maxHeight = "0px";
