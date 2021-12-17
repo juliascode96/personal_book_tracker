@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -25,6 +24,7 @@ public class CommentControl {
     @GetMapping("/books/{bookId}/comments")
     public String showCommentsByBook(@PathVariable Long bookId, Model model) {
         model.addAttribute("comments", commentSV.showByBook(bookId));
+        model.addAttribute("book", bookSV.searchById(bookId).get());
         return "comments";
     }
 
@@ -46,7 +46,7 @@ public class CommentControl {
             } catch (ServiceError e) {
                 System.out.println(e);
             }
-        return "redirect:/books";
+        return "redirect:/books/{bookId}/comments";
     }
 
     @GetMapping("/books/{bookId}/edit_comment/{id}")

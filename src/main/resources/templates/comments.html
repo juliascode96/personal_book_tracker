@@ -25,17 +25,29 @@
 
     </div>
 </header>
-        <h1>Comments</h1>
+<div th:each = "c: ${comments}" class="book-main">
+    <div class="card-text">
+        <div class="portada">
 
-    <div th:each = "c: ${comments}" class="comments">
-        <h3>Comment</h3>
-        <p th:text = "${c.text}"></p>
-        <span>Page number: </span><span th:text = "${c.pageNumber}"></span>
-        <div class="comment-b">
-            <a th:href="@{/books/{bookId}/edit_comment/{id} (id=${c.id}, bookId=${c.book.id})}" class = "boton">Edit</a>
-            <a th:href="@{/books/{bookId}/comment/{id} (id=${c.id}, bookId=${c.book.id})}" class = "boton">Delete</a>
         </div>
+        <div class="title-total">
+            <span class="title">Page number: <span th:text="${c.pageNumber}"></span></span>
+
+            <div th:text="${c.text}" class="desc"></div>
+            <br>
+            <br>
+            <br>
+            <div class="actions">
+                <a th:href="@{/books/{bookId}/edit_comment/{id} (id=${c.id}, bookId=${c.book.id})}" class = "boton">Edit comment</a>
+                <a th:href="@{/books/{bookId}/comment/{id} (id=${c.id}, bookId=${c.book.id})}" class = "boton">Delete comment</a>
+            </div>
+        </div>
+
     </div>
+
+</div>
+<a th:href="@{/books/{bookId}/new_comment(bookId=${book.id})}" class = "boton">Add comment</a>
+<a th:href="@{/books/{id}(id=${book.id})}" class = "boton">Back</a>
 <script>
     var lista = document.getElementById("lista");
     lista.style.maxHeight = "0px";
@@ -47,6 +59,11 @@
             lista.style.maxHeight = "0px";
         }
     }
+
+    $(window).on("load resize ", function() {
+        var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width(3);
+        $('.tbl-header').css({'padding-right':scrollWidth});
+    }).resize();
 </script>
 </body>
 </html>
