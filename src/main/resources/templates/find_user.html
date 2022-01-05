@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Books</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="navbar">
+        <nav>
+            <ul id="lista">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/books}">Books</a></li>
+                <li><a th:href="@{/book/new}">Add book</a></li>
+            </ul>
+        </nav>
+        <img src="nav.png" class="menu-icon" onclick="togglemenu()">
+
+    </div>
+</header>
+<h1>User</h1>
+<div class="body">
+    <form th:action="@{/user/search}">
+        Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+        &nbsp;
+        <input type="submit" value="Search" />
+        &nbsp;
+        <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+    </form>
+    <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tbody>
+            <tr th:object = "${user}">
+                <td th:text="${user.userName}"></td>
+                <td>
+                    <a th:href="@{{id}/books (id=${user.id})}" class = "boton">Show books</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+<script>
+    var lista = document.getElementById("lista");
+    lista.style.maxHeight = "0px";
+
+    function togglemenu(){
+        if(lista.style.maxHeight === "0px") {
+            lista.style.maxHeight = "145px";
+        } else {
+            lista.style.maxHeight = "0px";
+        }
+    }
+
+    $(window).on("load resize ", function() {
+        var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width(3);
+        $('.tbl-header').css({'padding-right':scrollWidth});
+    }).resize();
+</script>
+</body>
+</html>

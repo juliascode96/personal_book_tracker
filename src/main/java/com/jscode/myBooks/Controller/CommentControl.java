@@ -5,6 +5,7 @@ import com.jscode.myBooks.Entity.Comment;
 import com.jscode.myBooks.Errors.ServiceError;
 import com.jscode.myBooks.Service.BookSV;
 import com.jscode.myBooks.Service.CommentSV;
+import com.jscode.myBooks.Service.UserSV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,24 +22,29 @@ public class CommentControl {
     @Autowired
     BookSV bookSV;
 
-    @GetMapping("/books/{bookId}/comments")
-    public String showCommentsByBook(@PathVariable Long bookId, Model model) {
+    @Autowired
+    UserSV userSV;
+
+    @GetMapping("/{userId}/books/{bookId}/comments")
+    public String showCommentsByBook(@PathVariable Long bookId, @PathVariable Long userId, Model model) {
+        model.addAttribute("user", userSV.searchById(userId).get());
         model.addAttribute("comments", commentSV.showByBook(bookId));
         model.addAttribute("book", bookSV.searchById(bookId).get());
         return "comments";
     }
 
-    @GetMapping("/books/{bookId}/new_comment")
-    public String addCommentForm(@PathVariable Long bookId, Model model) {
+    @GetMapping("/{userId}/books/{bookId}/new_comment")
+    public String addCommentForm(@PathVariable Long bookId, @PathVariable Long userId, Model model) {
         Comment comment = new Comment();
         Book book = bookSV.searchById(bookId).get();
+        model.addAttribute("user", book.getUser());
         model.addAttribute("book", book);
         model.addAttribute("comment", comment);
         return "new_comment";
     }
 
-    @PostMapping("/books/{bookId}/comments")
-    public String createNewComment(@PathVariable Long bookId, @ModelAttribute("comment") Comment comment) {
+    @PostMapping("/{userId}/books/{bookId}/comments")
+    public String createNewComment(@PathVariable Long bookId, @PathVariable Long userId, @ModelAttribute("comment") Comment comment) {
             Book book = bookSV.searchById(bookId).get();
             comment.setBook(book);
             try {
@@ -46,21 +52,22 @@ public class CommentControl {
             } catch (ServiceError e) {
                 System.out.println(e);
             }
-        return "redirect:/books/{bookId}/comments";
+        return "redirect:/{userId}/books/{bookId}/comments";
     }
 
-    @GetMapping("/books/{bookId}/edit_comment/{id}")
-    public String editCommentForm(@PathVariable Long bookId, @PathVariable Long id, Model model){
+    @GetMapping("/{userId}/books/{bookId}/edit_comment/{id}")
+    public String editCommentForm(@PathVariable Long bookId, @PathVariable Long id, @PathVariable Long userId, Model model){
         Comment comment = commentSV.searchById(id).get();
         Book book = bookSV.searchById(bookId).get();
         comment.setBook(book);
         model.addAttribute("comment", comment);
         model.addAttribute("book", book);
+        model.addAttribute("user", userSV.searchById(userId).get());
         return "edit_comment";
     }
 
-    @PostMapping("/books/{bookId}/comments/{id}")
-    public String editComment(@PathVariable Long bookId, @PathVariable Long id, @ModelAttribute("comment")Comment comment) {
+    @PostMapping("/{userId}/books/{bookId}/comments/{id}")
+    public String editComment(@PathVariable Long bookId, @PathVariable Long id, @PathVariable Long userId, @ModelAttribute("comment")Comment comment) {
         comment.setBook(bookSV.searchById(bookId).get());
         Optional<Comment> resp = commentSV.searchById(id);
         if(resp.isPresent()){
@@ -78,11 +85,12 @@ public class CommentControl {
         return "redirect:/books/{bookId}/comments";
     }
 
-    @GetMapping("/books/{bookId}/comment/{id}")
-    public String deleteComment(@PathVariable Long bookId, @PathVariable Long id, Model model) {
+    @GetMapping("/{userId}/books/{bookId}/comment/{id}")
+    public String deleteComment(@PathVariable Long bookId, @PathVariable Long id, @PathVariable Long userId, Model model) {
         Book book = bookSV.searchById(bookId).get();
         model.addAttribute("book", book);
         model.addAttribute("comment", commentSV.searchById(id).get());
+        model.addAttribute("user", userSV.searchById(userId).get());
         commentSV.deleteComment(id);
         return "redirect:/books/{bookId}/comments";
     }

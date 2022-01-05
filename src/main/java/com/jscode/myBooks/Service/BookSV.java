@@ -26,19 +26,13 @@ public class BookSV {
     CommentRepo commentRepo;
 
     @Transactional
-    public Book saveBook(Book b) {
-        try {
+    public Book saveBook(Book b) throws ServiceError {
             validate(b.getTittle(), b.getAuthor(), (long)b.getPages());
-
-        } catch (ServiceError e){
-            System.out.println(e);
-        }
         return bookRepo.save(b);
     }
 
     @Transactional
-    public Book updateBook(Book b) {
-        try {
+    public Book updateBook(Book b) throws ServiceError {
             validate(b.getTittle(), b.getAuthor(), (long)b.getPages());
             v.validateNumber(b.getId());
             Optional<Book> resp = bookRepo.findById(b.getId());
@@ -46,9 +40,6 @@ public class BookSV {
                 Book b1 = resp.get();
                 return bookRepo.save(b1);
             }
-        } catch (ServiceError e){
-            System.out.println(e);
-        }
         return b;
     }
 
@@ -101,6 +92,10 @@ public class BookSV {
         }
         return bookRepo.findBySerieContainingIgnoreCase(serie);
     }
+
+    public List<Book> showByUser(Long userId) {
+          return bookRepo.findByUserId(userId);
+       }
 
     public Optional<Book> searchById(Long id) {
         try {
