@@ -28,7 +28,7 @@
 </header>
         <div class="login-box">
             <h2>New book</h2>
-                <form th:action="@{/books}" th:object="${book}" method="post">
+                <form th:action="@{/{userId}/books (userId=${user.id})}" th:object="${book}" method="post">
                     <input hidden th:field="*{id}">
                     <div class="user-box">
                         <input type="text" name = "tittle" th:field = "*{tittle}">

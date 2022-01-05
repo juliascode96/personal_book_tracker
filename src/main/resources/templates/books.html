@@ -48,9 +48,9 @@
             <td th:text="${book.pages}"></td>
             <td th:text="${book.serie}"></td>
             <td>
-                <a th:href="@{/books/{id}(id=${book.id})}" class = "boton">Show more</a>
-                <a th:href="@{/books/edit/{id}(id=${book.id})}" class = "boton">Edit</a>
-                <a th:href="@{/books/delete/{id}(id=${book.id})}" class = "boton">Delete</a>
+                <a th:href="@{/user/{userId}/books/{id}(id=${book.id}, userId=${user.id})}" class = "boton">Show more</a>
+                <a th:href="@{/user/{userId}/books/edit/{id}(id=${book.id}, userId=${user.id})}" class = "boton">Edit</a>
+                <a th:href="@{/user/{userId}/books/delete/{id}(id=${book.id}, userId=${user.id})}" class = "boton">Delete</a>
             </td>
         </tr>
          </tbody>
@@ -59,7 +59,7 @@
 
 </div>
     <div class="new-book">
-        <a th:href="@{/book/new}">New book</a>
+        <a th:href="@{/user/{userId}/book/new (userId=${user.id})}" >New book</a>
     </div>
 </div>
 

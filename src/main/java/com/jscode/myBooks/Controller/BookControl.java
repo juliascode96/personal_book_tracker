@@ -54,7 +54,7 @@ public class BookControl {
         book.setUser(user);
         try {
             bookSV.saveBook(book);
-            return "redirect:/{userId}/books";
+            return "redirect:/user/{userId}/books";
         } catch (ServiceError e) {
            return "error";
         }
