@@ -17,8 +17,9 @@
         <nav>
             <ul id="lista">
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/books}">Books</a></li>
-                <li><a th:href="@{/book/new}">Add book</a></li>
+                <li><a th:href="@{/user/{userId}/books (userId=${user.id})}">Books</a></li>
+                <li><a th:href="@{/user/{userId}/book/new (userId=${user.id})}">Add book</a></li>
+                <li th:text="${user.userName}"></li>
             </ul>
         </nav>
         <img src="nav.png" class="menu-icon" onclick="togglemenu()">
@@ -36,12 +37,8 @@
 
             <div class="desc"></div>
             <div class="actions">
-                <a th:href="@{/books/{bookId}/new_comment(bookId=${book.id})}" class = "boton">Add comment</a>
-                <a th:href="@{/books/{bookId}/comments(bookId=${book.id})}" class = "boton">All comments</a>
-                <br>
-                <br>
-                <a th:href="@{/books/{bookId}/new_quote(bookId=${book.id})}" class = "boton">Save quote</a>
-                <a th:href="@{/books/{bookId}/quotes(bookId=${book.id})}" class = "boton">Saved quotes</a>
+                <a th:href="@{/{userId}/books/{bookId}/new_comment(bookId=${book.id}, userId=${user.id})}" class = "boton">Add comment</a>
+                <a th:href="@{/{userId}/books/{bookId}/comments(bookId=${book.id}, userId=${user.id})}" class = "boton">All comments</a>
             </div>
         </div>
 

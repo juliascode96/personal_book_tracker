@@ -82,7 +82,7 @@ public class CommentControl {
                 System.out.println(e);
             }
         }
-        return "redirect:/books/{bookId}/comments";
+        return "redirect:/{userId}/books/{bookId}/comments";
     }
 
     @GetMapping("/{userId}/books/{bookId}/comment/{id}")
@@ -92,6 +92,6 @@ public class CommentControl {
         model.addAttribute("comment", commentSV.searchById(id).get());
         model.addAttribute("user", userSV.searchById(userId).get());
         commentSV.deleteComment(id);
-        return "redirect:/books/{bookId}/comments";
+        return "redirect:/{userId}/books/{bookId}/comments";
     }
 }

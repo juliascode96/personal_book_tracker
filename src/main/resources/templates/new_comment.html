@@ -17,9 +17,9 @@
         <nav>
             <ul id="lista">
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/books}">Books</a></li>
-                <li><a th:href="@{/book/new}">Add book</a></li>
-
+                <li><a th:href="@{/user/{userId}/books (userId=${user.id})}">Books</a></li>
+                <li><a th:href="@{/user/{userId}/book/new (userId=${user.id})}">Add book</a></li>
+                <li th:text="${user.userName}"></li>
             </ul>
         </nav>
         <img src="nav.png" class="menu-icon" onclick="togglemenu()">
@@ -27,8 +27,8 @@
     </div>
 </header>
 <div class="login-box">
-    <h2>New book</h2>
-                <form th:action="@{/books/{bookId}/comments (bookId=${book.id})}" th:object="${comment}" method="post">
+    <h2>New comment</h2>
+                <form th:action="@{/{userId}/books/{bookId}/comments (bookId=${book.id}, userId=${user.id})}" th:object="${comment}" method="post">
                     <input hidden th:field="*{id}">
                     <div class="user-box" id="comment-text">
                         <input type="text" name = "text" th:field = "*{text}">

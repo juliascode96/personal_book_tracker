@@ -35,6 +35,7 @@ public class BookControl {
 
     @GetMapping("/user/{userId}/books/{id}")
     public String getBookById(@PathVariable Long id, @PathVariable Long userId, Model model) {
+        model.addAttribute("user", userSV.searchById(userId).get());
         model.addAttribute("book", bookSV.searchById(id).get());
         return "book";
     }
@@ -87,7 +88,7 @@ public class BookControl {
                 bookSV.saveBook(b1);
             }
 
-            return "redirect:/books";
+            return "redirect:/user/{userId}/books";
         } catch (ServiceError e) {
             return "error";
         }
@@ -102,7 +103,7 @@ public class BookControl {
         }
         model.addAttribute("user", userSV.searchById(userId).get());
         bookSV.deleteBook(id);
-        return "redirect:/books";
+        return "redirect:/user/{userId}/books";
     }
 
 }
